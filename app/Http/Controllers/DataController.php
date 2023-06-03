@@ -19,7 +19,7 @@ class DataController extends Controller
 
     public function storeDaftar(Request $request){
          $validator = Validator::make($request->all(), [
-            'npwpd' => 'required',
+            'npwpd' => 'required|unique:t_daftar',
             'nama_bu' => 'required',
             'alamat_bu' => 'required',
             'nama_wp' => 'required',
