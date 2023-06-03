@@ -6,16 +6,16 @@ use Illuminate\Http\Request;
 use Validator;
 use Hash;
 use Auth;
-use App\Models\User;
+use App\Models\AdminPad;
 use App\Helpers\Response;
 
 class AuthController extends Controller
 {
     public function signUp(Request $request){
-
+  
          $validator = Validator::make($request->all(), [
             'nama' => 'required|string|max:255',
-            'no_telpon' => 'required|string|max:255|unique:users',
+            'no_telpon' => 'required|string|max:255|unique:admin_pads',
             'password' => 'required|string|min:8'
         ]);
 
@@ -24,7 +24,7 @@ class AuthController extends Controller
         }
 
         try {
-            $user = User::create([
+            $user = AdminPad::create([
                 'nama' => $request->nama,
                 'no_telpon' => $request->no_telpon,
                 'password' => Hash::make($request->password)
@@ -54,11 +54,11 @@ class AuthController extends Controller
         }
 
        try {
-         if (! Auth::attempt($request->only('no_telpon', 'password'))) {
+         if (! Auth::guard('adminpad')->attempt($request->only('no_telpon', 'password'))) {
             return Response::error(null, 'Unauthorised');
         }
 
-        $user = User::where('no_telpon', $request->no_telpon)->firstOrFail();
+        $user = AdminPad::where('no_telpon', $request->no_telpon)->firstOrFail();
         $token = $user->createToken('auth_token')->plainTextToken;
         $response = [
             'id' => $user->id,
@@ -73,7 +73,7 @@ class AuthController extends Controller
 
     public function logout(){
         try {
-             $data = Auth::user()->tokens()->delete();
+             $data = Auth::guard('adminpad')->user()->tokens()->delete();
            return Response::success('', 'Logouts successfull');
         } catch (QueryException $e) {
             return Response::error(null, 'Logout failed');
