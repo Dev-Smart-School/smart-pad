@@ -63,7 +63,7 @@ class AuthController extends Controller
         $response = [
             'id' => $user->id,
             'nama' => $user->nama,
-            'no_telpon' => $user->no_telepon,
+            'no_telpon' => $user->no_telpon,
         ];
         return Response::authResponse($response, 'Auth has been success', $token);
        } catch (\Throwable $th) {
