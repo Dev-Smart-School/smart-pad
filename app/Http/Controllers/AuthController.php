@@ -20,7 +20,8 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            // return response()->json($validator->errors());
+            return Response::error(null, $validator->errors());
         }
 
         try {
@@ -45,12 +46,12 @@ class AuthController extends Controller
       
          $validator = Validator::make($request->all(), [
             'no_telpon' => 'required',
-            'password' => 'required',
+            'password' => 'required|min:8',
         ]);
 
         if ($validator->fails())
         {
-            return response(['errors'=>$validator->errors()->all()], 422);
+            return Response::error(null, $validator->errors());
         }
 
        try {
