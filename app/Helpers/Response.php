@@ -42,4 +42,25 @@ class Response
     return response()->json(self::$response, self::$response['code']);
   }
 
+   public static function validation($data = null, $errors, $code = 422)
+  {
+   
+    $formattedErrors = [];
+    foreach ($errors->messages() as $field => $messages) {
+        $formattedErrors[$field] = $messages[0];
+    }
+
+    // return $message;
+    
+
+    self::$response['status'] = 'error';
+    self::$response['code'] = $code;
+    self::$response['message'] = $formattedErrors;
+    self::$response['data'] = $data;
+
+    return response()->json(self::$response, self::$response['code']);
+  }
+
+
+
 }
