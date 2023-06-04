@@ -10,10 +10,17 @@ class DataController extends Controller
 {
     public function getDaftar(){
         try {
-            $data = DB::table('t_daftar')->get();
+        $params = request('npwpd');
+        $query = DB::table('t_daftar');
+
+        if ($params) {
+            $query->where('npwpd', $params);
+        }
+        $data = $query->get();
+
             return Response::success($data, 'Daftar pajak has been get successfull');
         } catch (\Throwable $th) {
-            return Response::error(null, 'Daftar pajak failed create');
+            return Response::error(null, $th->getMessage());
         }
     }
 
