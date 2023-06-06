@@ -22,5 +22,6 @@ Route::post('/daftar', [DataController::class,'storeDaftar'])->name('data.storeD
 Route::group(['middleware' => ['auth:sanctum']], function () {
    Route::get('/daftar', [DataController::class,'getDaftar'])->name('data.getDaftar');
    Route::get('/uudata', [DataController::class,'getUuData'])->name('data.getUuData');
+   Route::get('/uutap', [DataController::class,'get_uutap'])->name('data.get_uutap');
    Route::post('/logout', [AuthController::class,'logout'])->name('auth.logout');
 });

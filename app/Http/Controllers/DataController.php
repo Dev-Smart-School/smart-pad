@@ -63,4 +63,20 @@ class DataController extends Controller
             return Response::error(null, 'Daftar pajak failed create');
         }
     }
+
+    public function get_uutap(){
+        try {
+            $params = request('npwpd');
+            $query = DB::table('t_uutap');
+
+            if ($params) {
+                $query->where('npwpd_gab', $params);
+            }
+            
+            $data = $query->get();
+            return Response::success($data, 'Daftar pajak has been get successfull');
+        } catch (\Throwable $th) {
+            return Response::error(null, 'UUtap failed get');
+        }
+    }
 }
