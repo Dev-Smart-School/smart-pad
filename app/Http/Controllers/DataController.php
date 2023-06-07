@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
 use App\Helpers\Response;
+use Illuminate\Support\Facades\DB;
 use Validator;
 
 class DataController extends Controller
@@ -97,6 +97,9 @@ class DataController extends Controller
             $data->transform(function ($item) {
                 $item->jumlah_gab = (int) $item->jumlah_gab;
                 $item->total_gab = (int) $item->total_gab;
+                $item->setor = (int) $item->setor;
+                $item->jml_pokok = (int) $item->jml_pokok;
+                $item->rate_gab = (int) $item->rate_gab;
                 return $item;
             });
 
