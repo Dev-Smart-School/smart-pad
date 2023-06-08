@@ -80,16 +80,14 @@ class AuthController extends Controller
 
     public function logout()
     {
-        // try {
-        //     $data = Auth::guard('adminpad')->user()->tokens()->delete();
-        //     return Response::success('', 'Logout successfull');
-        // } catch (QueryException $e) {
-        //     return Response::error(null, 'Logout failed');
-        // }
-
         try {
-            Auth::guard('adminpad')->user()->tokens()->delete();
-            return Response::success('', 'Logout successfull');
+            if (auth()->guard('adminpad')->check()) {
+                $user = auth()->guard('adminpad')->user();
+                $user->tokens()->delete();
+                return Response::success('', 'Logout successfull');
+            } else {
+                return Response::error(null, 'User not authenticated');
+            }
         } catch (QueryException $e) {
             return Response::error(null, 'Logout failed');
         }
