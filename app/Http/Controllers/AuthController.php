@@ -64,7 +64,7 @@ class AuthController extends Controller
             if (!Auth::guard('adminpad')->attempt($request->only('no_telpon', 'password'))) {
                 return Response::error(null, 'Unauthorised');
             }
-
+            
             $user = AdminPad::where('no_telpon', $request->no_telpon)->firstOrFail();
             $token = $user->createToken('auth_token')->plainTextToken;
             $response = [
@@ -80,14 +80,21 @@ class AuthController extends Controller
 
     public function logout()
     {
+
         try {
-            if (auth()->guard('adminpad')->check()) {
-                $user = auth()->guard('adminpad')->user();
-                $user->tokens()->delete();
-                return Response::success('', 'Logout successfull');
-            } else {
-                return Response::error(null, 'User not authenticated');
+            // $user = Auth::guard('adminpad')->user();
+            // $user->tokens()->delete();
+
+            // return Response::success('', 'Logout successfull');
+
+             $adminGuard = Auth::guard('adminpad');
+
+            if ($adminGuard->check()) {
+                $admin = $adminGuard->user();
+                $admin->currentAccessToken()->delete();
+                return response()->json(['message' => 'Logout successful'], 200);
             }
+            
         } catch (QueryException $e) {
             return Response::error(null, 'Logout failed');
         }

@@ -42,7 +42,7 @@ return [
         ],
 
         'adminpad' => [
-            'driver' => 'sanctum',
+            'driver' => 'session',
             'provider' => 'adminpad',
         ],
     ],
